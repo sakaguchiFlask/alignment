@@ -1,10 +1,11 @@
 package main
 
 import (
-	"biotools/alignment/tools"
 	"flag"
 	"fmt"
 	"strings"
+
+	"github.com/sakaguchiFlask/alignment/tools"
 )
 
 func main() {
@@ -88,7 +89,7 @@ func main() {
 		}
 	}
 	if outputFile != "" {
-		err := tools.FileWrite(outputFile, resultSeq, resultSeq2, resultMatching, "seq1", "seq2", maxi, displaywidth)
+		err := tools.WriteFile(outputFile, resultSeq, resultSeq2, resultMatching, "seq1", "seq2", maxi, displaywidth)
 		if err != nil {
 			panic(err)
 		}

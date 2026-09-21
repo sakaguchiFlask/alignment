@@ -1,29 +1,27 @@
 package tools
 
 import (
-	"bufio"
 	"errors"
-	"os"
+	"fmt"
 	"strconv"
 	"strings"
 )
 
-func FileWrite(fileName, seq1, seq2, matching, name1, name2 string, offset, lineWidth int) error {
-	if seq1 == "" || seq2 == "" {
+func countNucleotide(seq string) int {
+	var basepair int
+	for i := 0; i < len(seq); i++ {
+		if seq[i:i+1] == "A" || seq[i:i+1] == "T" || seq[i:i+1] == "G" || seq[i:i+1] == "C" {
+			basepair++
+		}
+	}
+	return basepair
+}
+
+func Display(seq1, seq2, matching, name1, name2 string, offset, lineWidth int) error {
+	if seq1 == "" || seq2 == "" || matching == "" {
 		var ErrorNoSeq = errors.New("seq(s) is blank")
 		return ErrorNoSeq
 	}
-	fp, err := os.Create(fileName)
-	if err != nil {
-		panic(err)
-	}
-	defer fp.Close()
-
-	writer := bufio.NewWriter(fp)
-	defer writer.Flush()
-
-	// _, err := writer.WriteString(line)
-
 	if lineWidth == 0 {
 		lineWidth = 60
 	}
@@ -33,7 +31,6 @@ func FileWrite(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 	complementSeq2 := strings.Repeat(" ", offset) + seq2 + strings.Repeat(" ", (len(seq1)-offset-len(seq2)))
 	complementMatching := strings.Repeat(" ", offset) + matching + strings.Repeat(" ", (len(seq1)-offset-len(matching)))
 
-	outputLine := make([]string, 6)
 	var sequence1, matchingSequence, sequence2, scale1, scale2 string
 	count1 := 1
 	count2 := 1
@@ -48,7 +45,7 @@ func FileWrite(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 			} else {
 				scale2 = ""
 			}
-			sequence1 = seq1[(i * lineWidth):len(seq1)]
+			sequence1 = seq1[(i * lineWidth):]
 			if (len(sequence1) - len(strconv.Itoa(count1+countNucleotide(sequence1))) - len(strconv.Itoa(count1))) < 0 {
 				scale1 = strconv.Itoa(count1) + " " + strconv.Itoa(count1+countNucleotide(sequence1)-1)
 			} else {
@@ -75,26 +72,17 @@ func FileWrite(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 			scale1 = strconv.Itoa(count1) + strings.Repeat(" ", len(sequence1)-len(strconv.Itoa(count1+countNucleotide(sequence1)))-len(strconv.Itoa(count1))) + strconv.Itoa(count1+countNucleotide(sequence1)-1)
 			count1 = count1 + countNucleotide(sequence1)
 		}
-		outputLine[0] = strings.Repeat(" ", len(seqName1)) + scale1 + "\n"
-		outputLine[1] = seqName1 + sequence1 + "\n"
-		outputLine[2] = strings.Repeat(" ", len(seqName1)) + matchingSequence + "\n"
-		outputLine[3] = (seqName2 + sequence2) + "\n"
-		outputLine[4] = (strings.Repeat(" ", len(seqName1)) + scale2) + "\n"
-		outputLine[5] = "\n"
-		for i := 0; i < 6; i++ {
-			_, err := writer.WriteString(outputLine[i])
-			if err != nil {
-				panic(err)
-			}
-		}
-		/* 		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)+1) + scale1)
-		   		_, err := writer.WriteString(seqName1, sequence1)
-		   		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)), matchingSequence)
-		   		_, err := writer.WriteString(seqName2, sequence2)
-		   		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)+1) + scale2)
-		   		_, err := writer.WriteString()
-		*/
+		fmt.Println(strings.Repeat(" ", len(seqName1)+1) + scale1)
+		fmt.Println(seqName1, sequence1)
+		fmt.Println(strings.Repeat(" ", len(seqName1)), matchingSequence)
+		fmt.Println(seqName2, sequence2)
+		fmt.Println(strings.Repeat(" ", len(seqName1)+1) + scale2)
+		fmt.Println()
+
 	}
 	return nil
-
 }
+
+/*
+AGAGTTTGAT CCTGGCTCAG GATGAACGCT AGCGATAGGC TTAACACATG CAAGTCGAGG
+*/
