@@ -22,8 +22,6 @@ func WriteFile(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 	writer := bufio.NewWriter(fp)
 	defer writer.Flush()
 
-	// _, err := writer.WriteString(line)
-
 	if lineWidth == 0 {
 		lineWidth = 60
 	}
@@ -42,7 +40,6 @@ func WriteFile(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 			matchingSequence = complementMatching[(i * lineWidth):len(seq1)]
 			sequence2 = complementSeq2[(i * lineWidth):len(seq1)]
 			if countNucleotide(sequence2) != 0 {
-				//scale2 = strconv.Itoa(count2)
 				scale2 = strconv.Itoa(count2 + countNucleotide(sequence2))
 				count2++
 			} else {
@@ -59,7 +56,6 @@ func WriteFile(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 			matchingSequence = complementMatching[(i * lineWidth):((i + 1) * lineWidth)]
 			sequence2 = complementSeq2[(i * lineWidth):((i + 1) * lineWidth)]
 			if countNucleotide(sequence2) != 0 {
-				//scale2 = strconv.Itoa(count2)
 				var indent int
 				for indent = 0; sequence2[indent:indent+1] == " "; indent++ {
 				}
@@ -87,14 +83,6 @@ func WriteFile(fileName, seq1, seq2, matching, name1, name2 string, offset, line
 				panic(err)
 			}
 		}
-		/* 		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)+1) + scale1)
-		   		_, err := writer.WriteString(seqName1, sequence1)
-		   		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)), matchingSequence)
-		   		_, err := writer.WriteString(seqName2, sequence2)
-		   		_, err := writer.WriteString(strings.Repeat(" ", len(seqName1)+1) + scale2)
-		   		_, err := writer.WriteString()
-		*/
 	}
 	return nil
-
 }

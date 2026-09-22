@@ -9,14 +9,6 @@ func Align(seq1, seq2 string, Penalty, weightScore int) (alignedSeq1, alignedSeq
 		var ErrorNoSeq = errors.New("seq(s) is blank")
 		return "", "", "", 0, ErrorNoSeq
 	}
-	/*
-		const (
-			d            = 1 // evaluation score
-			matchscore   = 1
-			unmatchscore = -1
-		)
-			Penalty, weightScore
-	*/
 	d := Penalty // evaluation score
 	matchscore := weightScore
 	unmatchscore := -Penalty

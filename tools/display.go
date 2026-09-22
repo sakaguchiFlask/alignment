@@ -39,7 +39,6 @@ func Display(seq1, seq2, matching, name1, name2 string, offset, lineWidth int) e
 			matchingSequence = complementMatching[(i * lineWidth):len(seq1)]
 			sequence2 = complementSeq2[(i * lineWidth):len(seq1)]
 			if countNucleotide(sequence2) != 0 {
-				//scale2 = strconv.Itoa(count2)
 				scale2 = strconv.Itoa(count2 + countNucleotide(sequence2))
 				count2++
 			} else {
@@ -56,7 +55,6 @@ func Display(seq1, seq2, matching, name1, name2 string, offset, lineWidth int) e
 			matchingSequence = complementMatching[(i * lineWidth):((i + 1) * lineWidth)]
 			sequence2 = complementSeq2[(i * lineWidth):((i + 1) * lineWidth)]
 			if countNucleotide(sequence2) != 0 {
-				//scale2 = strconv.Itoa(count2)
 				var indent int
 				for indent = 0; sequence2[indent:indent+1] == " "; indent++ {
 				}
@@ -82,7 +80,3 @@ func Display(seq1, seq2, matching, name1, name2 string, offset, lineWidth int) e
 	}
 	return nil
 }
-
-/*
-AGAGTTTGAT CCTGGCTCAG GATGAACGCT AGCGATAGGC TTAACACATG CAAGTCGAGG
-*/
